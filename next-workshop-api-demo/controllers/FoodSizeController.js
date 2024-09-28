@@ -4,10 +4,12 @@ const prisma = new PrismaClient();
 module.exports = {
   create: async (req, res) => {
     try {
-      await prisma.foodType.create({
+      await prisma.foodSize.create({
         data: {
+          foodTypeId: req.body.foodTypeId,
           name: req.body.name,
           remark: req.body.remark,
+          moneyAdded: req.body.moneyAdded,
           status: "use",
         },
       });
@@ -19,7 +21,10 @@ module.exports = {
 
   list: async (req, res) => {
     try {
-      const rows = await prisma.foodType.findMany({
+      const rows = await prisma.foodSize.findMany({
+        include: {
+          FoodType: true,
+        },
         where: {
           status: "use",
         },
@@ -35,7 +40,7 @@ module.exports = {
 
   remove: async (req, res) => {
     try {
-      const rows = await prisma.foodType.update({
+      await prisma.foodSize.update({
         data: {
           status: "delete",
         },
@@ -51,10 +56,12 @@ module.exports = {
 
   update: async (req, res) => {
     try {
-      await prisma.foodType.update({
+      await prisma.foodSize.update({
         data: {
           name: req.body.name,
           remark: req.body.remark,
+          moneyAdded: req.body.moneyAdded,
+          foodTypeId: req.body.foodTypeId,
         },
         where: {
           id: req.body.id,

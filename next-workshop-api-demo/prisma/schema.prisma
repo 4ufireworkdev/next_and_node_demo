@@ -16,7 +16,7 @@ datasource db {
 model User {
   id       Int    @id() @default(autoincrement())
   name     String
-  username String
+  username String @unique()
   password String
   level    String @default("admin")
   status   String @default("use")
@@ -27,4 +27,24 @@ model FoodType {
   name   String
   remark String
   status String @default("use")
+  FoodSizes FoodSize[]
+  Tastes Taste[]
+}
+
+model FoodSize {
+  id      Int    @id() @default(autoincrement())
+  name    String
+  remark  String
+  foodTypeId  Int
+  moneyAdded  Int
+  status  String  @default("use")
+  FoodType  FoodType @relation(fields: [foodTypeId], references: [id])
+}
+
+model Taste {
+  id      Int    @id() @default(autoincrement())
+  name    String
+  remark  String
+  foodTypeId  Int
+  FoodType  FoodType @relation(fields: [foodTypeId], references: [id])
 }
