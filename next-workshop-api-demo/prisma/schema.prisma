@@ -29,6 +29,7 @@ model FoodType {
   status String @default("use")
   FoodSizes FoodSize[]
   Tastes Taste[]
+  Foods  Food[]
 }
 
 model FoodSize {
@@ -45,6 +46,19 @@ model Taste {
   id      Int    @id() @default(autoincrement())
   name    String
   remark  String
+  status  String    @default("use")
+  foodTypeId  Int
+  FoodType  FoodType @relation(fields: [foodTypeId], references: [id])
+}
+
+model Food {
+  id      Int    @id() @default(autoincrement())
+  name    String
+  img     String
+  remark  String
+  status  String  @default("use")
+  price   Int
+  foodType  String  @default("food")
   foodTypeId  Int
   FoodType  FoodType @relation(fields: [foodTypeId], references: [id])
 }
