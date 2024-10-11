@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import config from "@/app/config";
+import { log } from "console";
 
 export default function Page() {
   const [foodTypeId, setFoodTypeId] = useState(0);
@@ -52,6 +53,18 @@ export default function Page() {
     }
   };
 
+  const handleEdit = (item: any) => {
+    console.log(item);
+
+    setId(item.id);
+    setFoodTypeId(item.foodTypeId);
+    setName(item.name);
+    setRemark(item.remark);
+    setPrice(item.price);
+    setFoodType(item.foodType);
+    setImg(item.img);
+  };
+
   const handleSave = async () => {
     try {
       const img = await handleUpload();
@@ -62,23 +75,23 @@ export default function Page() {
         price: price,
         img: img,
         id: id,
-        foodType:foodType
+        foodType: foodType,
       };
       if (id == 0) {
         const res = await axios.post(
           config.apiServer + "/api/food/create",
           payload
         );
-        Swal.fire({
-          title: "success",
-          text: res.data.message,
-          icon: "success",
-          timer:1000
-        });
       } else {
-        await axios.post(config.apiServer + "/api/food/update", payload);
+        await axios.put(config.apiServer + "/api/food/update", payload);
         setId(0);
       }
+      Swal.fire({
+        title: "บันทึกข้อมูล",
+        text: "บันทึกข้อมูลสำเร็จ",
+        icon: "success",
+        timer: 1000,
+      });
       fetchData();
       document.getElementById("modalFood_btnClose")?.click();
     } catch (e: any) {
@@ -91,8 +104,13 @@ export default function Page() {
   };
 
   const handleClearForm = () => {
+    setId(0);
     setName("");
     setRemark("");
+    setPrice(0);
+    setFoodType("food");
+    setImg("");
+    (document.getElementById("myFile") as HTMLInputElement).value = "";
   };
 
   const handleRemove = async (id: number) => {
@@ -116,13 +134,6 @@ export default function Page() {
         icon: "error",
       });
     }
-  };
-
-  const edit = (item: any) => {
-    setFoodTypeId(item.foodTypeId);
-    setId(item.id);
-    setName(item.name);
-    setRemark(item.remark);
   };
 
   const handleSelectedFile = (e: any) => {
@@ -150,13 +161,13 @@ export default function Page() {
     }
   };
 
-  const getFoodTypeName = (foodType: string) : string =>{
-    if(foodType == 'food'){
-        return 'อาหาร';
-    }else{
-        return 'เครื่องดื่ม';
+  const getFoodTypeName = (foodType: string): string => {
+    if (foodType == "food") {
+      return "อาหาร";
+    } else {
+      return "เครื่องดื่ม";
     }
-  }
+  };
 
   return (
     <div className="card mt-3">
@@ -166,7 +177,7 @@ export default function Page() {
           className="btn btn-primary"
           data-bs-toggle="modal"
           data-bs-target="#modalFood"
-          //   onClick={handleClearForm}
+          onClick={handleClearForm}
         >
           <i className="fa fa-plus me-2"></i>เพิ่มรายการ
         </button>
@@ -204,8 +215,8 @@ export default function Page() {
                   <button
                     className="btn btn-primary me-2"
                     data-bs-toggle="modal"
-                    data-bs-target="#modalTaste"
-                    onClick={(e) => edit(item)}
+                    data-bs-target="#modalFood"
+                    onClick={() => handleEdit(item)}
                   >
                     <i className=" fa fa-edit"></i>
                   </button>
@@ -222,7 +233,7 @@ export default function Page() {
         </table>
       </div>
       <MyModal id="modalFood" title="อาหาร">
-        <div>ประเภท</div>
+        <div className="mt-3">ประเภท</div>
         <select
           className="form-control"
           value={foodTypeId}
@@ -234,14 +245,22 @@ export default function Page() {
             </option>
           ))}
         </select>
-        <div>ภาพ</div>
+        <div className="mt-3">ภาพ</div>
+        {img != "" && (
+          <img
+            className="mb-2 img-fluid"
+            src={config.apiServer + "/uploads/" + img}
+            alt={name}
+            width="100"
+          />
+        )}
         <input
           className="form-control"
           type="file"
-          value={img}
+          id="myFile"
           onChange={(e) => handleSelectedFile(e)}
         />
-        <div>ชื่อ</div>
+        <div className="mt-3">ชื่อ</div>
         <input
           className="form-control"
           value={name}
@@ -264,6 +283,7 @@ export default function Page() {
         <div className="mt-3">ประเภทอาหาร</div>
         <div className="mt-1">
           <input
+            className="mt-3"
             type="radio"
             name="foodType"
             value="food"
@@ -272,13 +292,14 @@ export default function Page() {
           />
           อาหาร
           <input
+            className="mt-3"
             type="radio"
             name="foodType"
             value="drink"
             checked={foodType === "drink"}
             onChange={(e) => setFoodType(e.target.value)}
           />
-          อาหาร
+          เครื่องดื่ม
         </div>
 
         <div className="mt-3">

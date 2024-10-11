@@ -4,8 +4,8 @@ const prisma = new PrismaClient();
 module.exports = {
   upload: async (req, res) => {
     try {
-      const myFile = req.files.myFile;
-      if (myFile != undefined) {
+      if (req.files != undefined) {
+        const myFile = req.files.myFile;
         const fileName = myFile.name;
 
         const fileExtension = fileName.split(".").pop();
@@ -47,8 +47,8 @@ module.exports = {
     try {
       const rows = await prisma.food.findMany({
         include: {
-            FoodType: true,
-          },
+          FoodType: true,
+        },
         where: {
           status: "use",
         },
@@ -73,6 +73,61 @@ module.exports = {
         },
       });
       return res.send({ message: "success" });
+    } catch (e) {
+      return res.status(500).send({ error: e.messge });
+    }
+  },
+
+  update: async (req, res) => {
+    try {
+      const oldFood = await prisma.food.findUnique({
+        where: {
+          id: req.body.id,
+        },
+      });
+      if (oldFood.img != "") {
+        if (req.body.img != "") {
+          const fs = require("fs");
+          fs.unlinkSync("uploads/" + oldFood.img);
+        }
+      }
+      await prisma.food.update({
+        data: {
+          foodTypeId: req.body.foodTypeId,
+          name: req.body.name,
+          remark: req.body.remark,
+          image: req.body.image,
+          price: req.body.price,
+          img: req.body.img,
+          foodType: req.body.foodType,
+        },
+        where: {
+          id: parseInt(req.body.id),
+        },
+      });
+      return res.send({ message: "success" });
+    } catch (e) {
+      return res.status(500).send({ error: e.messge });
+    }
+  },
+
+  filter: async (req, res) => {
+    try {
+      let condition = {
+        status: "use",
+      };
+
+      if (req.params.foodType != "all") {
+        condition.foodType = req.params.foodType;
+      }
+
+      const foods = await prisma.food.findMany({
+        where: condition,
+        orderBy: {
+          name: "asc",
+        },
+      });
+      return res.send({ results: foods });
     } catch (e) {
       return res.status(500).send({ error: e.messge });
     }

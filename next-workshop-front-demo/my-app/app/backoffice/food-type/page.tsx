@@ -11,6 +11,16 @@ export default function Page() {
   const [remark, setRemark] = useState("");
   const [foodTypes, setFoodTypes] = useState([]);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const edit = async (item: any) => {
+    setId(item.id);
+    setName(item.name);
+    setRemark(item.remark);
+  };
+
   const handleSave = async () => {
     try {
       const payload = {
@@ -36,15 +46,6 @@ export default function Page() {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const edit = async (item: any) => {
-    setId(item.id);
-    setName(item.name);
-    setRemark(item.remark);
-  };
   const fetchData = async () => {
     try {
       const rows = await axios.get(config.apiServer + "/api/foodType/list");
@@ -93,12 +94,14 @@ export default function Page() {
     <div className="card mt-3">
       <div className="card-header">ประเภทอาหาร/เครื่องดื่ม</div>
       <div className="card-body">
+
         <button
           className="btn btn-primary"
           data-bs-toggle="modal"
           data-bs-target="#modalFoodType"
           onClick={clearForm}
         >
+         
           <i className="fa fa-plus me-2"></i>เพิ่มรายการ
         </button>
 

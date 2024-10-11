@@ -23,6 +23,8 @@ const foodTypecontrolller = require("./controllers/FoodTypeController");
 const foodSizeController = require("./controllers/FoodSizeController");
 const tasteController = require("./controllers/TasteController");
 const foodController = require("./controllers/FoodController");
+const saleTempController = require("./controllers/SaleTempController");
+
 
 app.post("/api/user/signIn", (req, res) => userController.signIn(req, res));
 app.post("/api/foodType/create", (req, res) =>
@@ -58,6 +60,19 @@ app.post("/api/food/create", (req, res) => foodController.create(req, res));
 app.get("/api/food/list", (req, res) => foodController.list(req, res));
 app.delete("/api/food/remove/:id", (req, res) =>
   foodController.remove(req, res)
+);
+app.put("/api/food/update", (req, res) => foodController.update(req, res));
+app.get("/api/food/filter/:foodType", (req, res) =>
+  foodController.filter(req, res)
+);
+
+app.post("/api/saleTemp/create", (req, res) => saleTempController.create(req, res));
+app.get("/api/saleTemp/list", (req, res) => saleTempController.list(req, res));
+app.delete("/api/saleTemp/remove/:id", (req, res) =>
+  saleTempController.remove(req, res)
+);
+app.delete("/api/saleTemp/removeAll/:id", (req, res) =>
+  saleTempController.removeAll(req, res)
 );
 // ######## Router Zone ########
 

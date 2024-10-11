@@ -99,27 +99,33 @@ export default function Sidebar() {
               data-accordion="false"
             >
               <li className="nav-item">
+                <Link href="/backoffice/sale" className="nav-link">
+                  <i className="nav-icon fas fa-dollar-sign"></i>
+                  <p>ขายสินค้า</p>
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link href="/backoffice/food-type" className="nav-link">
                   <i className="nav-icon fas fa-th"></i>
-                <p>ประเภทอาหาร</p>
+                  <p>ประเภทอาหาร</p>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link href="/backoffice/food-size" className="nav-link">
                   <i className="nav-icon fas fa-list"></i>
-                <p>ขนาด</p>
+                  <p>ขนาด</p>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link href="/backoffice/taste" className="nav-link">
                   <i className="nav-icon fas fa-file-alt"></i>
-                <p>รสชาติอาหาร</p>
+                  <p>รสชาติอาหาร</p>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link href="/backoffice/food" className="nav-link">
                   <i className="nav-icon fas fa-utensils"></i>
-                <p>อาหาร</p>
+                  <p>อาหาร</p>
                 </Link>
               </li>
             </ul>

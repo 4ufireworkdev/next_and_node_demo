@@ -122,20 +122,20 @@ export default function Page() {
           <i className="fa fa-plus me-2"></i>เพิ่มรายการ
         </button>
 
-        <table className="mt-3 table table-bordered table-striped">
+        <table className="mt-3 table table-hover table-bordered table-striped">
           <thead>
             <tr>
-              <th style={{ width: "100px" }}>ประเภทอาหาร</th>
-              <th style={{ width: "100px" }}>ชื่อ</th>
+              <th style={{ width: "150px",textAlign:'center' }}>ประเภทอาหาร</th>
+              <th style={{ width: "150px",textAlign:'center' }}>ชื่อ</th>
               <th>หมายเหตุ</th>
-              <th style={{ width: "110px" }}></th>
+              <th style={{ width: "110px",textAlign:'center' }}></th>
             </tr>
           </thead>
           <tbody>
             {tastes.map((item: any) => (
               <tr key={item.id}>
-                <td>{item.FoodType.name}</td>
-                <td>{item.name}</td>
+                <td style={{textAlign:'center' }}>{item.FoodType.name}</td>
+                <td style={{textAlign:'center' }}>{item.name}</td>
                 <td>{item.remark}</td>
                 <td className="text-center">
                   <button

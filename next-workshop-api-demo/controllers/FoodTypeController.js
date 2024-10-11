@@ -20,7 +20,6 @@ module.exports = {
   list: async (req, res) => {
     try {
       const rows = await prisma.foodType.findMany({
-        
         where: {
           status: "use",
         },
@@ -36,7 +35,7 @@ module.exports = {
 
   remove: async (req, res) => {
     try {
-      const rows = await prisma.foodType.update({
+      await prisma.foodType.update({
         data: {
           status: "delete",
         },

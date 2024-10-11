@@ -126,7 +126,7 @@ export default function Page() {
           <table className="mt-3 table table-bordered table-striped">
             <thead>
               <tr>
-                <th style={{ width: "150px" }}>ประเภทอาหาร</th>
+                <th style={{ width: "200px" }}>ประเภทอาหาร</th>
                 <th style={{ width: "100px" }}>ชื่อ</th>
                 <th>หมายเหตุ</th>
                 <th className="text-end" style={{ width: "100px" }}>
